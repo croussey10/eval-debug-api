@@ -128,6 +128,10 @@ class OrderService
             throw new OrderRestaurantMismatchException();
         }
 
+        if ($order->getStatus() == OrderStatus::Paid) {
+            throw new OrderAlreadyPaidException();
+        }
+
         // aucune garde de doublon : le même plat peut figurer deux fois, une ligne vaut un plat
         // et une quantité
         $line = new OrderLine()

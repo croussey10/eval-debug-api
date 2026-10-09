@@ -4,6 +4,7 @@ namespace App\Dto\KitchenTicket;
 
 use ApiPlatform\Metadata\ApiProperty;
 use App\Dto\Dish\DishListOutput;
+use App\Dto\Order\OrderDetailsOutput;
 use DateTimeImmutable;
 use Symfony\Component\Uid\Uuid;
 
@@ -32,6 +33,7 @@ final class KitchenTicketListOutput
             'description' => "Date d'émission du bon.",
         ])]
         public readonly DateTimeImmutable $createdAt,
+
     ) {
     }
 }

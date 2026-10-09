@@ -14,13 +14,18 @@ Une section par test en échec : renseignez ses quatre champs.
 
 ## testAddingALineToAPaidOrderIsAConflict
 
-**Symptôme** :
+**Symptôme** : Un utilisateur peut ajouter une ligne dans une commande déjà payé
 
-**Cause** :
+**Cause** : Oublie d'une condition dans la méthode addLine de l'OrderService 
 
-**Règle du module en jeu** :
+**Règle du module en jeu** : Validation de profondeur / Service
 
-**Correctif** :
+**Correctif** : Vérifié si la le status de la commande est payé et si oui renvoyé une erreur de conflit
+```php
+if ($order->getStatus() == OrderStatus::Paid) {
+            throw new OrderAlreadyPaidException();
+        }
+```
 
 ## testAddingALineToMyOrder
 
@@ -34,13 +39,15 @@ Une section par test en échec : renseignez ses quatre champs.
 
 ## testAddingALineWithAZeroQuantityIsUnprocessable
 
-**Symptôme** :
+**Symptôme** : Lorsqu'on ajoute une ligne de commande avec un plat mais 0 en quantité de plat, le plat est ajouter dans notre panier avec 0 en quantité alors que cela ne devrait pas être possible
 
-**Cause** :
+**Cause** : DTO d'input mal configuré
 
-**Règle du module en jeu** :
+**Règle du module en jeu** : Validation de surface
 
-**Correctif** :
+**Correctif** : Modification de la DTO OrderAddLineInput pour le champ quantity : 
+- Assert\Positive
+- 'minimum' => 1
 
 ## testListingKitchenTicketsReturnsMine
 
@@ -54,13 +61,13 @@ Une section par test en échec : renseignez ses quatre champs.
 
 ## testListingKitchenTicketsWithoutTokenIsUnauthorized
 
-**Symptôme** :
+**Symptôme** : Un user non connecté peux récupéré la liste des tickets d'une cuisine
 
-**Cause** :
+**Cause** : ApiResource de l'Entity KitchenTicket 
 
-**Règle du module en jeu** :
+**Règle du module en jeu** : Sécurité
 
-**Correctif** :
+**Correctif** : Ajout de "security: 'is_granted("ROLE_USER")'" dans les operations ApiResource
 
 ## testOpeningAnOrderIgnoresAnAbandonedOne
 
@@ -84,20 +91,21 @@ Une section par test en échec : renseignez ses quatre champs.
 
 ## testRefreshingTwiceWithTheSameTokenIsUnauthorized
 
-**Symptôme** :
+**Symptôme** : Une fois le refresh token utilisé, il reste le même alors qu'il devrait changer
 
-**Cause** :
+**Cause** : Config Packages gesdinet_jwt_refresh_token
 
-**Règle du module en jeu** :
+**Règle du module en jeu** : Token JWT
 
-**Correctif** :
+**Correctif** : passer la variable single_use: false à true
 
 ## testRemovingALineFromSomeoneElsesOrderIsForbidden
 
-**Symptôme** :
+**Symptôme** : Un user peut supprimer une ligne d'une commande d'une autre personne
 
-**Cause** :
+**Cause** : Méthode Delete de l'ApiResource de l'entity Order
 
-**Règle du module en jeu** :
+**Règle du module en jeu** : Sécurité
 
-**Correctif** :
+**Correctif** : Modifier dans l'operation security le "or" par un "and" car le or dit que si une personne est connecté ou qu'elle est sur son compte elle peut delete une commande alors qu'il faut que les 2 conditions soient remplie : : 
+- security: "is_granted('ROLE_USER') and object.getCreatedBy() == user",
