@@ -124,6 +124,8 @@ class OrderService
             static fn (int $key, OrderLine $line): bool => !$line->getDish()->getRestaurant()->getId()->equals($restaurantId),
         );
 
+//        $this->findOneById($order->getId());
+
         if (null !== $foreignLine) {
             throw new OrderRestaurantMismatchException();
         }

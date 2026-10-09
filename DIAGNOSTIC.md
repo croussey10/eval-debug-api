@@ -4,13 +4,15 @@ Une section par test en échec : renseignez ses quatre champs.
 
 ## testAddingALineToAnUnknownOrderIsNotFound
 
-**Symptôme** :
+**Symptôme** : Un utilisateur n'a pas d'erreur 404 quand il ajoute une ligne dans un panier qui n'existe pas mais une 500
 
-**Cause** :
+**Cause** : OrderService addLine
 
 **Règle du module en jeu** :
 
-**Correctif** :
+**Correctif** : 
+
+**PAS COMPRIS** : j'ai essayé de rajouter cette ligne : ```php $this->findOneById($order->getId()); ``` dans la méthode addLine du service mais je ne comprends pas pourquoi ça ne fonctionne pas.
 
 ## testAddingALineToAPaidOrderIsAConflict
 
